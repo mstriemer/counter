@@ -1,0 +1,16 @@
+{
+  "env": {
+    "mocha": true,
+  },
+  "extends": "airbnb",
+  "globals": {
+    "assert": true,
+    "sinon": true,
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "new-cap": 0,
+    "object-curly-spacing": 0,
+    "space-before-function-paren": [2, "never"]
+  }
+}
