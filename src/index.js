@@ -9,7 +9,9 @@ const container = document.getElementById('app');
 
 function render() {
   container.innerHTML = '';
-  renderTree(tree(Counter, { store }), container);
+  const state = store.getState();
+  const dispatch = store.dispatch;
+  renderTree(tree(Counter, { dispatch, state }), container);
 }
 
 store.subscribe(render);
