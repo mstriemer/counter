@@ -1,8 +1,5 @@
-const Button = ({ onClick, text }) => {
-  const el = document.createElement('button');
-  el.textContent = text;
-  el.addEventListener('click', onClick);
-  return el;
-};
+import { tree } from 'rendering';
+
+const Button = ({ onClick, text }) => tree('button', { onClick }, [text]);
 
 export default Button;

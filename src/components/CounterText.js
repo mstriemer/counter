@@ -1,7 +1,5 @@
-const CounterText = ({ state }) => {
-  const el = document.createElement('span');
-  el.textContent = `Count is ${state}`;
-  return el;
-};
+import { tree } from 'rendering';
+
+const CounterText = ({ state }) => tree('span', {}, [`Count is ${state}`]);
 
 export default CounterText;

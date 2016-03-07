@@ -1,19 +1,20 @@
 import Button from './Button';
 import CounterText from './CounterText';
+import { tree } from 'rendering';
 
 const Counter = ({ store }) => {
   const state = store.getState();
-  const root = document.createElement('div');
-  root.appendChild(CounterText({ state }));
-  root.appendChild(Button({
-    onClick: () => store.dispatch({type: 'INCREMENT'}),
-    text: '+',
-  }));
-  root.appendChild(Button({
-    onClick: () => store.dispatch({type: 'DECREMENT'}),
-    text: '-',
-  }));
-  return root;
+  return tree('div', {}, [
+    tree(CounterText, { state }),
+    tree(Button, {
+      onClick: () => store.dispatch({type: 'INCREMENT'}),
+      text: '+',
+    }),
+    tree(Button, {
+      onClick: () => store.dispatch({type: 'DECREMENT'}),
+      text: '-',
+    }),
+  ]);
 };
 
 export default Counter;
