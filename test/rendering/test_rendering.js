@@ -175,19 +175,31 @@ describe('renderApp', () => {
   let store;
   const CounterText = ({ counter }) => tree('span', {id: 'counter'},
     'The count is ',
-    tree('strong', {}, counter),
+    tree('strong', null, counter),
   );
   const Counter = ({ counter }) =>
-    tree('div', {},
+    tree('div', null,
       tree(CounterText, { counter }),
       tree('span', {id: 'unchanged'}, 'Text!'),
-      tree('span', {}, counter),
+      tree('span', null, counter),
     );
+  const makeChildren = (counter) => {
+    const children = [];
+    for (let i = 0; i < counter; i++) {
+      children.push(tree('div', null, i));
+    }
+    return children;
+  };
+  const NodeCounter = ({ counter }) => {
+    const children = makeChildren(counter);
+    return tree('div', null, ...children);
+  };
 
   beforeEach(() => {
     container = document.createElement('div');
     store = {
-      state: {counter: 20},
+      state: {counter: 3},
+      subscriber() {},
       subscribe(fn) {
         this.subscriber = fn;
       },
@@ -206,9 +218,9 @@ describe('renderApp', () => {
     assert.equal(
       container.innerHTML,
       '<div>' +
-        '<span id="counter">The count is <strong>20</strong></span>' +
+        '<span id="counter">The count is <strong>3</strong></span>' +
         '<span id="unchanged">Text!</span>' +
-        '<span>20</span>' +
+        '<span>3</span>' +
       '</div>');
     // Update the store to render again.
     store.update({counter: 5});
@@ -221,15 +233,69 @@ describe('renderApp', () => {
       '</div>');
   });
 
-  xit('only updates changed nodes', () => {
+  it('only updates when global state changes', () => {
     renderApp(Counter, store, container);
     const root = container.children[0];
-    const unchanged = container.querySelector('#unchanged');
+    // Update the store to render again.
+    store.update(store.getState());
+    // FIXME: This isn't specific enough because mutation.
+    assert.equal(root, container.children[0], 'root should be the same');
+  });
+
+  it('only updates an attribute if that is all that changed', () => {
+    const AttrCounter = ({ counter }) => tree('div', { counter }, 'Count!');
+    renderApp(AttrCounter, store, container);
+    assert.equal(container.innerHTML, '<div counter="3">Count!</div>');
+    const root = container.children[0];
     // Update the store to render again.
     store.update({counter: 5});
+    assert.equal(container.innerHTML, '<div counter="5">Count!</div>');
     assert.equal(root, container.children[0], 'root should be the same');
-    assert.equal(unchanged, container.querySelector('#unchanged'),
-                 'unchanged should be the same');
+  });
+
+  it('removes nodes when needed', () => {
+    renderApp(NodeCounter, store, container);
+    assert.equal(
+      container.innerHTML,
+      '<div>' +
+        '<div>0</div>' +
+        '<div>1</div>' +
+        '<div>2</div>' +
+      '</div>');
+    const root = container.children[0];
+    // Update the store to render again.
+    store.update({counter: 2});
+    assert.equal(
+      container.innerHTML,
+      '<div>' +
+        '<div>0</div>' +
+        '<div>1</div>' +
+      '</div>');
+    assert.equal(root, container.children[0], 'root should be the same');
+  });
+
+  it('adds nodes when needed', () => {
+    renderApp(NodeCounter, store, container);
+    assert.equal(
+      container.innerHTML,
+      '<div>' +
+        '<div>0</div>' +
+        '<div>1</div>' +
+        '<div>2</div>' +
+      '</div>');
+    const root = container.children[0];
+    // Update the store to render again.
+    store.update({counter: 5});
+    assert.equal(
+      container.innerHTML,
+      '<div>' +
+        '<div>0</div>' +
+        '<div>1</div>' +
+        '<div>2</div>' +
+        '<div>3</div>' +
+        '<div>4</div>' +
+      '</div>');
+    assert.equal(root, container.children[0], 'root should be the same');
   });
 
   it('will not let you render into a non-empty container', () => {

@@ -6,6 +6,7 @@ var webpack = require('webpack');
 // related add them to src/core/server/dev.js.
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: [
     './src/index',
   ],
@@ -24,16 +25,16 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"',
-      },
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     NODE_ENV: '"production"',
+    //   },
+    // }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //   },
+    // }),
   ],
   resolve: {
     root: [
