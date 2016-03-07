@@ -1,5 +1,7 @@
+/** @jsx tree */
+
 import { tree } from 'rendering';
 
-const CounterText = ({ counter }) => tree('span', {}, [`Count is ${counter}`]);
+const CounterText = ({ counter }) => <span>Count is {counter}</span>;
 
 export default CounterText;
