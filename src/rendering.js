@@ -1,5 +1,4 @@
 export function tree(component, props, ...children) {
-  console.log(arguments);
   return { component, props, children };
 }
 
