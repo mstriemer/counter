@@ -1,18 +1,15 @@
-import Button from './Button';
 import CounterText from './CounterText';
 import { tree } from 'rendering';
 
-const Counter = ({ dispatch, state }) => (
+const Counter = ({ dispatch, counter }) => (
   tree('div', {}, [
-    tree(CounterText, { state }),
-    tree(Button, {
+    tree(CounterText, { counter }),
+    tree('button', {
       onClick: () => dispatch({type: 'INCREMENT'}),
-      text: '+',
-    }),
-    tree(Button, {
+    }, ['+']),
+    tree('button', {
       onClick: () => dispatch({type: 'DECREMENT'}),
-      text: '-',
-    }),
+    }, ['-']),
   ])
 );
 

@@ -1,5 +1,5 @@
 import { tree } from 'rendering';
 
-const CounterText = ({ state }) => tree('span', {}, [`Count is ${state}`]);
+const CounterText = ({ counter }) => tree('span', {}, [`Count is ${counter}`]);
 
 export default CounterText;

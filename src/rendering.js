@@ -21,7 +21,7 @@ function renderTextNode(text) {
 export function renderTree(rootTree, container) {
   let root = rootTree;
   while (typeof root.component !== 'string') {
-    root = root.component(root.props);
+    root = root.component(root.props, root.children);
   }
   const rootElement = renderHtmlElement(root.component, root.props);
   root.children.forEach((childTree) => {

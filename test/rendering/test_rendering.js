@@ -124,4 +124,30 @@ describe('renderTree', () => {
     container.children[0].dispatchEvent(new Event('click'));
     assert.equal(clicked, true);
   });
+
+  it('can set text children on custom elements', () => {
+    const Button = ({ onClick }, children) =>
+      tree('button', { onClick }, children);
+    renderTree(
+      tree(Button, { onClick: () => {} }, ['The text']),
+      container);
+    assert.equal(container.innerHTML, '<button>The text</button>');
+  });
+
+  it('can set element children on custom elements', () => {
+    const Button = ({ onClick }, children) =>
+      tree('button', { onClick }, children);
+    renderTree(
+      tree(Button, { onClick: () => {} }, [
+        tree('span', {}, ['Some text']),
+        tree('strong', {foo: 'foo'}, ['Strong text']),
+      ]),
+      container);
+    assert.equal(
+      container.innerHTML,
+      '<button>' +
+        '<span>Some text</span>' +
+        '<strong foo="foo">Strong text</strong>' +
+      '</button>');
+  });
 });
