@@ -1,7 +1,3 @@
-/** @jsx tree */
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/prop-types */
-
 import CounterText from './CounterText';
 import { tree } from 'rendering';
 

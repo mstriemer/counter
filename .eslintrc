@@ -7,10 +7,16 @@
     "assert": true,
     "sinon": true,
   },
+  "plugins": ["jsx"],
   "parser": "babel-eslint",
   "rules": {
     "new-cap": 0,
     "object-curly-spacing": 0,
+    "react/prop-types": 0,
+    "react/jsx-no-bind": 0,
+    "react/react-in-jsx-scope": 0,
+    "jsx/uses-factory": [1, {"pragma": "tree"}],
+    "jsx/factory-in-scope": [1, {"pragma": "tree"}],
     "space-before-function-paren": [2, "never"]
   }
 }

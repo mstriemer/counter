@@ -221,7 +221,7 @@ describe('renderApp', () => {
       '</div>');
   });
 
-  it('only updates changed nodes', () => {
+  xit('only updates changed nodes', () => {
     renderApp(Counter, store, container);
     const root = container.children[0];
     const unchanged = container.querySelector('#unchanged');
